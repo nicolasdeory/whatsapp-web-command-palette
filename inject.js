@@ -50,17 +50,21 @@
             return score;
         }
 
+        function processMessage(msg) {
+            return {
+                body: msg.type === 'chat' ? msg.body.replace(/</g, '&lt;').replace(/>/g, '&gt;') : `&lt;${msg.type}&gt;`,
+                fromMe: !!msg.id.fromMe,
+                authorName: msg.id.fromMe ? null : (msg.senderObj?.name ?? msg.pushname ?? 'Unknown')
+            };
+        }
+
         function enrichChatData(chat, index) {
             const unreadCount = chat.unreadCount;
+            console.log(chat.msgs._models);
             const lastmsgs = chat.msgs?._models
                 ?.slice(-15)
-                .filter(msg => !msg.isNotification)
-                .map(msg => ({
-                    body: msg.type === 'chat' ? msg.body : `<${msg.type}>`,
-                    fromMe: !!msg.id.fromMe,
-                    authorName: !msg.id.fromMe ? (msg.senderObj?.name || msg.author || 'Unknown') : null
-                }))
-                .reverse() || [];
+                .filter(msg => msg.type !== 'e2e_notification' && msg.type !== 'gp2')
+                .map(processMessage) || [];
 
             return {
                 original: chat.formattedTitle,
@@ -250,6 +254,13 @@
                 chatPreview.innerHTML = '';
                 chatPreview.style.display = 'none';
             }
+
+            function getSpeakerName(msg, isGroup) {
+                if (msg.fromMe) return 'You';
+                if (!isGroup) return 'Them';
+                return msg.authorName;
+            }
+
             async function showChatPreview(result) {
                 let currentSpeaker = null;
                 chatPreview.innerHTML = `<h3>${result.original}</h3><div id="messages-container"></div>`;
@@ -268,13 +279,13 @@
 
                 result.lastmsgs.forEach(msg => {
                     let output = '';
-                    const speaker = isGroup ? (msg.fromMe ? 'You' : msg.authorName || 'Unknown') : (msg.fromMe ? 'You' : 'Them');
+                    const speaker = getSpeakerName(msg, isGroup);                 
                     
                     if (speaker !== currentSpeaker) {
                         currentSpeaker = speaker;
                         output += `<p style="text-align: ${msg.fromMe ? 'right' : 'left'};"><strong style="color: ${!msg.fromMe ? 'var(--focus)' : 'inherit'};">${speaker}</strong></p>`;
                     }
-                    output += `<p style="text-align: ${msg.fromMe ? 'right' : 'left'};">${msg.body}</p>`;
+                    output += `<p style="text-align: ${msg.fromMe ? 'right' : 'left'};">${msg.body || ''}</p>`;
                     messagesContainer.innerHTML += output;
                 });
 
@@ -300,10 +311,9 @@
                             return;
                         }
 
-                        const messages = loadedMessages.filter(msg => !msg.isNotification).map(msg => ({
-                            body: msg.body,
-                            fromMe: !!msg.id.fromMe
-                        }));
+                        const messages = loadedMessages
+                            .filter(msg => !msg.isNotification)
+                            .map(processMessage);
 
                         resolve(messages.slice(-15)); // Limit to 15 messages
                     });
@@ -312,7 +322,7 @@
 
             // Add the Ctrl+K shortcut to open/close the palette
             document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && e.key === 'k') {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                     e.preventDefault();
                     palette.classList.toggle('active');
                     if (palette.classList.contains('active')) {
