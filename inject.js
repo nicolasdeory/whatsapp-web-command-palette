@@ -1,15 +1,12 @@
 (function () {
-    console.log("Inject script started");
 
     function waitForRequire(callback) {
         if (window.require) {
-            console.log("window.require is available");
             callback(window.require);
         }
     }
 
     function initializeExtension(require) {
-        console.log("Initializing extension");
 
         // New ranking function
         function rankMatch(query, item, originalIndex) {
@@ -120,7 +117,6 @@
 
         function createCommandPalette() {
             function switchToChat(chat) {
-                console.log('Switching to chat:', chat.formattedTitle);
                 window.Store.Cmd.openChatAt(chat);
                 closeCommandPalette();
             }
@@ -133,7 +129,6 @@
                 }
             }
 
-            console.log("Creating command palette");
             const palette = document.createElement('div');
             palette.id = 'wa-command-palette';
             palette.innerHTML = `
@@ -560,12 +555,14 @@
         }
 
         // Initialize WhatsApp Web client and set up Store
-        console.log("Initializing WhatsApp Web client");
         window.Store = Object.assign({}, window.require('WAWebCollections'));
         window.Store.ConversationMsgs = Object.assign({}, window.require('WAWebChatLoadMessages'));
         window.Store.Cmd = window.require('WAWebCmd').Cmd;
         window.Store.SearchContext = window.require('WAWebChatMessageSearch').getSearchContext;
+        // remove stock command palette
+        window.Store.Cmd.openCommandPalette = () => {};
         createCommandPalette();
+        console.log("Command palette initialized");
     }
 
     // Wait for the document to be fully loaded
