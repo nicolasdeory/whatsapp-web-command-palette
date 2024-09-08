@@ -1,0 +1,203 @@
+:root {
+    --app-background: var(--app-background);
+    --panel-background: var(--panel-background);
+    --input-background: var(--search-input-background);
+    --input-placeholder: var(--input-placeholder);
+    --primary-strong: var(--primary-strong);
+    --border-list: var(--border-list);
+    --icon-high-emphasis: var(--icon-high-emphasis);
+    --focus: var(--focus);
+    --icon-lighter: var(--icon-lighter);
+    --background-default-hover: var(--background-default-hover);
+    --unread-marker-text: var(--unread-marker-text);
+    --unread-marker-background: var(--unread-marker-background);
+}
+
+.dark {
+    --app-background: var(--app-background);
+    --panel-background: var(--panel-background);
+    --input-background: var(--search-input-background);
+    --input-placeholder: var(--input-placeholder);
+    --primary-strong: var(--primary-strong);
+    --border-list: var(--border-list);
+    --icon-high-emphasis: var(--icon-high-emphasis);
+    --focus: var(--focus);
+    --icon-lighter: var(--icon-lighter);
+    --background-default-hover: var(--background-default-hover);
+    --unread-marker-text: var(--unread-marker-text);
+    --unread-marker-background: var(--unread-marker-background);
+}
+
+#wa-command-palette {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background: var(--panel-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    display: none;
+}
+
+#wa-command-palette.active {
+    display: block;
+}
+
+#wa-search-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid var(--border-list);
+    /* Added border-bottom */
+    border-radius: 8px 8px 0 0;
+    outline: none;
+    background-color: var(--input-background);
+    color: var(--primary-strong);
+    font-size: 14px;
+}
+
+#wa-search-input::placeholder {
+    color: var(--input-placeholder);
+}
+
+/* Add this new rule */
+#wa-search-input::selection {
+    background-color: var(--focus);
+    color: var(--primary-strong);
+}
+
+#wa-search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#wa-search-results.no-results {
+    border-radius: 0 0 8px 8px;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: var(--icon-lighter);
+    /* Using a WhatsApp color variable */
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.result-text {
+    flex-grow: 1;
+}
+
+#wa-search-results li {
+    padding: 8px 10px;
+    cursor: pointer;
+    color: var(--primary-strong);
+}
+
+#wa-search-results li:hover,
+#wa-search-results li.selected {
+    background-color: var(--background-default-hover);
+}
+
+#wa-search-results li:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+#wa-search-results mark {
+    /* background-color: var(--focus); */
+    background-color: transparent;
+    /* color: var(--primary-strong); */
+    color: var(--focus);
+    font-weight: bold;
+}
+
+/* Scrollbar styles */
+#wa-search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+#wa-search-results::-webkit-scrollbar-track {
+    background: var(--panel-background);
+}
+
+#wa-search-results::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 3px;
+}
+
+#wa-search-results::-webkit-scrollbar-thumb:hover {
+    background: var(--icon-high-emphasis);
+}
+
+.unread-badge {
+    background-color: var(--unread-marker-background);
+    color: var(--unread-marker-text);
+    border-radius: 1.1em;
+    padding: 0.3em 0.4em 0.4em;
+    min-height: 1em;
+    min-width: 0.9em;
+    line-height: 1;
+    text-align: center;
+    font-weight: 600;
+    display: inline-block;
+    font-size: 0.75rem;
+}
+
+#wa-chat-preview {
+    position: absolute;
+    right: -300px;
+    top: 0;
+    width: 280px;
+    max-height: 450px;
+    /* Added max-height */
+    overflow-y: auto;
+    /* Added scrollable */
+    background-color: var(--panel-background);
+    border: 1px solid var(--secondary);
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    color: var(--primary-strong);
+}
+
+#wa-chat-preview h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--primary-strong);
+}
+
+#wa-chat-preview p {
+    margin: 5px 0;
+    color: var(--secondary);
+}
+
+/* Add scrollbar styles for the chat preview */
+#wa-chat-preview::-webkit-scrollbar {
+    width: 6px;
+}
+
+#wa-chat-preview::-webkit-scrollbar-track {
+    background: var(--panel-background);
+}
+
+#wa-chat-preview::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 3px;
+}
+
+#wa-chat-preview::-webkit-scrollbar-thumb:hover {
+    background: var(--icon-high-emphasis);
+}
