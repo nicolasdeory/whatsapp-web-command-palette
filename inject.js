@@ -453,6 +453,7 @@
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                     e.preventDefault();
+                    window.Store.Cmd.closeCommandPalette();
                     palette.classList.toggle('active');
                     if (palette.classList.contains('active')) {
                         input.focus();
