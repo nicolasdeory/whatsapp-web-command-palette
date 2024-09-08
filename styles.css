@@ -11,6 +11,8 @@
     --background-default-hover: var(--background-default-hover);
     --unread-marker-text: var(--unread-marker-text);
     --unread-marker-background: var(--unread-marker-background);
+    /* --search-badge-bg: var(--filters-item-active-background); */
+    --search-badge-bg: var(--unread-marker-background);
 }
 
 .dark {
@@ -26,6 +28,8 @@
     --background-default-hover: var(--background-default-hover);
     --unread-marker-text: var(--unread-marker-text);
     --unread-marker-background: var(--unread-marker-background);
+    /* --search-badge-bg: var(--filters-item-active-background); */
+    --search-badge-bg: var(--unread-marker-background);
 }
 
 #wa-command-palette {
@@ -39,6 +43,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 9999;
     display: none;
+    border: solid 1px var(--panel-background);
 }
 
 #wa-command-palette.active {
@@ -46,7 +51,7 @@
 }
 
 #wa-search-input {
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     border: none;
     border-bottom: 1px solid var(--border-list);
@@ -120,7 +125,7 @@
     /* background-color: var(--focus); */
     background-color: transparent;
     /* color: var(--primary-strong); */
-    color: var(--focus);
+    color: var(--unread-marker-background);
     font-weight: bold;
 }
 
@@ -154,6 +159,12 @@
     font-weight: 600;
     display: inline-block;
     font-size: 0.75rem;
+}
+
+#wa-chat-badge {
+    padding: 10px;
+    background-color: var(--search-badge-bg);
+    font-weight: 600;
 }
 
 #wa-chat-preview {
@@ -200,4 +211,21 @@
 
 #wa-chat-preview::-webkit-scrollbar-thumb:hover {
     background: var(--icon-high-emphasis);
+}
+
+.pin-icon {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.pin-icon.pinned {
+    color: var(--unread-marker-background);
+}
+
+.pin-action-item {
+    background-color: var(--background-default-hover);
+}
+
+.pin-action-item:hover {
+    background-color: var(--background-default-active);
 }
